@@ -6,7 +6,12 @@ const upload = multer({storage:multer.memoryStorage()})
 
 
 
-postRoute.post('/', upload.single('chacha'), postController)
+postRoute.post('/', upload.single('chacha'), postController.createPostController)
+
+
+postRoute.get('/',postController.userPostController)
+
+postRoute.get('/details/:postId', postController.getPostDetailsController)
 
 
 

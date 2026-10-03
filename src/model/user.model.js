@@ -5,16 +5,16 @@ const userSchema = new mongoose.Schema({
     username:{
         type:String,
         unique:[true,"This username is already exaists"],
-        require:[true,'UserName is required']
+        required: [true, 'UserName is required']
     },
     email:{
         type:String,
         unique:[true,"This email is already exaists"],
-        require:[true,'User email is required']
+        required: [true, 'User email is required']
     },
     password:{
         type:String,
-        require:[true,'User password is required']
+       required: [true, 'User password is required']
     },
     bio:String,
     profileImage:{
