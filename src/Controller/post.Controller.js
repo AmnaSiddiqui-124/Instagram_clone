@@ -1,10 +1,11 @@
 const { toFile } = require("@imagekit/nodejs");
-
 const postModel = require('../model/user.post');
-
 const ImageKit = require('@imagekit/nodejs');
 
-const jwt = require("jsonwebtoken");
+
+
+
+
 
 const imagekit = new ImageKit({
     privateKey: process.env.IMAGEKIT_PRIVATE_KEY
@@ -13,31 +14,6 @@ const imagekit = new ImageKit({
 
 async function createPostController(req, res) {
 
-    console.log(req.body, req.file);
-
-    const token = req.cookies.token;
-
-    if (!token) {
-        return res.status(401).json({
-            message: "Token not provided, unauthorized access"
-        });
-    }
-let decoded ; 
-
-   try {
-     decoded = jwt.verify(
-        token,
-        process.env.JWT_KEY
-    );
-
-   } catch (err) {
-    res.status(401).json({
-        message:"user not authorized"
-    })
-   }
-
-   console.log(decoded);
-   
 
 
     const file = await imagekit.files.upload({
@@ -49,7 +25,7 @@ let decoded ;
     const post = await postModel.create({
         caption: req.body.caption,
         imgUrl: file.url,
-        user: decoded.id
+        user:req.user.id
     });
 
     res.status(201).json({
@@ -61,33 +37,18 @@ let decoded ;
 
 
 
-async function userPostController(req,res){
-    const token = req.cookies.token
+async function userPostController(req, res) {
 
-    if(!token){
-        return res.status(401).json({
-            message:"Unauthorized Access"
-        })
-    }
-
-    let decoded
-    try {
-        decoded = jwt.verify(token,process.env.JWT_KEY)
-    } catch (err) {
-        return res.status(401).json({
-            message:"Invalid Token"
-        })
-    }
+    const userId = req.user.id
 
 
-    const userId = decoded.id
     const posts = await postModel.find({
         user: userId
     })
 
 
     res.status(200).json({
-        message:"All Posts",
+        message: "All Posts",
         posts
     })
 }
@@ -95,25 +56,8 @@ async function userPostController(req,res){
 
 async function getPostDetailsController(req, res) {
 
-    const token = req.cookies.token
 
-    if (!token) {
-        return res.status(401).json({
-            message: "Unauthorized Access"
-        })
-    }
-
-    let decoded
-
-    try {
-        decoded = jwt.verify(token, process.env.JWT_KEY)
-    } catch (err) {
-        return res.status(401).json({
-            message: "Invalid Token"
-        })
-    }
-
-    const userId = decoded.id
+    const userId = req.user.id
     const postId = req.params.postId
 
     const post = await postModel.findById(postId)
@@ -136,8 +80,8 @@ async function getPostDetailsController(req, res) {
         message: "Post fetched successfully.",
         post
     })
-}   
+}
 
 
 
-module.exports ={ createPostController,userPostController,getPostDetailsController};
+module.exports = { createPostController, userPostController, getPostDetailsController };
