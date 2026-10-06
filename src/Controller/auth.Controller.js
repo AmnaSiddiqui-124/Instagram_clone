@@ -28,9 +28,12 @@ async function registerController(req, res) {
     const user = await userModel.create({
         username, email, password: hash, bio, profileImage
     })
-    const token = jwt.sign({
-        id: user._id
-    }, process.env.JWT_KEY, { expiresIn: "1d" }
+    const token = jwt.sign(
+    {
+        id: user._id,
+        username:user.username
+    }, 
+    process.env.JWT_KEY, { expiresIn: "1d" }
 
     )
     res.cookie("token",token)
@@ -80,7 +83,11 @@ async function loginController(req,res){
     }
 
     const token = jwt.sign(
-        {id:isUserExists._id},
+        {
+            id:isUserExists._id,
+            username:isUserExists.username
+
+        },
         process.env.JWT_KEY,
         {expiresIn:"1d"}
     )
