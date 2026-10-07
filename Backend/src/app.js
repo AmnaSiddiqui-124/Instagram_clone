@@ -8,8 +8,8 @@ app.use(cookieparser())
 
 
 const authRoutes = require('./Routes/auth.routes')
-const postRoute = require('../src/Routes/post.route')
-const userRoute = require('../src/Routes/user.route')
+const postRoute = require('./Routes/post.route')
+const userRoute = require('./Routes/user.route')
 
 
 
