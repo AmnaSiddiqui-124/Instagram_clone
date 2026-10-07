@@ -25,10 +25,10 @@ async function followUserControlle(req,res) {
         })
     }
 
-    const AlreadyFollowing = await followModel.find({
-        follower:followerUserName,
-        followee:followeeUserName
-    })
+    const AlreadyFollowing = await followModel.findOne({
+    follower: followerUserName,
+    followee: followeeUserName
+})
     
 
     if(AlreadyFollowing){
@@ -50,6 +50,66 @@ async function followUserControlle(req,res) {
     })
 }
 
+
+async function acceptFollowRequest(req,res) {
+    const followerUserName = req.params.username
+    const followeeUserName = req.user.username
+
+
+    const followRequest = await followModel.findOne({
+        follower:followerUserName,
+        followee:followeeUserName,
+        status:"pending"
+    })
+
+    if(!followRequest){
+        return res.status(404).json({
+            message:"Follow request not found"
+        })
+    }
+
+    followRequest.status = "accepted"
+
+    await followRequest.save()
+
+
+    res.status(200).json({
+        message:`you accecpt ${followerUserName}'s follow request`
+    })
+
+}
+
+async function rejectFollowRequest(req, res) {
+
+    const followerUserName = req.params.username
+    const followeeUserName = req.user.username
+
+    console.log("Follower:", followerUserName)
+    console.log("Followee:", followeeUserName)
+
+    const followRequest = await followModel.findOne({
+        follower: followerUserName,
+        followee: followeeUserName,
+        status: "pending"
+    })
+
+    console.log("Follow Request:", followRequest)
+
+    if (!followRequest) {
+        return res.status(404).json({
+            message: "Follow request not found"
+        })
+    }
+
+    followRequest.status = "rejected"
+
+    await followRequest.save()
+
+    res.status(200).json({
+        message: `You rejected ${followerUserName}'s follow request`,
+        follow: followRequest
+    })
+}
 
 
 async function unfollowUser(req,res) {
@@ -77,4 +137,4 @@ async function unfollowUser(req,res) {
     })
 }
 
-module.exports = {followUserControlle,unfollowUser}
+module.exports = {followUserControlle,unfollowUser,acceptFollowRequest,rejectFollowRequest}
