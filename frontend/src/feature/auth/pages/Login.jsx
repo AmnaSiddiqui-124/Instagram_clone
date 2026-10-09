@@ -1,47 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
 import '../style/form.scss'
 import { Link } from 'react-router'
-import axios from 'axios'
 
 const Login = () => {
-  const [username, setusername] = useState("")
-  const [password, setpassword] = useState("")
 
-  async function handleSubmit(e) {
-    e.preventDefault()
-
-
-  }
-
-
+    const handleSubmit = (e) => {
+        e.preventDefault()
+    }
   return (
+
+
+    <>
     <main>
-        <div className="form_container">
+        <div className="form-container">
             <h1>Login</h1>
-
             <form onSubmit={handleSubmit}>
-
-
-                <input
-                onInput={(e)=>{setusername(e.target.value)}} 
-                type="text"
-                name="username"
-                placeholder='Enter UserName'/>
-
-
-
-                <input 
-                onInput={(e)=>{setpassword(e.target.value)}}
-                type="text" 
-                name='password' 
-                placeholder='Enter Password'/>
-
-
-                <button type='submit'>Login</button>
+                <input type="text" name="username" id="username" placeholder="Enter Username"/>
+                <input type="password" name="password" id="password" placeholder="Enter Password"/>
+                <button className='button primary-button'>Login</button>
             </form>
-        <p>Don't have an account? <Link className='toggleAuthForm' to='/register'>Register</Link></p>
+            <p>Don't have an account ? <Link to={"/register"}>Create One</Link></p>
         </div>
     </main>
+    
+    </>
   )
 }
 
