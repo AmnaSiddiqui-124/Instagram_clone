@@ -1,6 +1,7 @@
 import {createBrowserRouter} from 'react-router'
 import Login from './feature/auth/pages/Login'
 import Register from './feature/auth/pages/Register'
+import Feed from './feature/post/pages/Feed'
 
 export const router = createBrowserRouter([
     {
@@ -13,6 +14,6 @@ export const router = createBrowserRouter([
     },
     {
         path:'/',
-        element:<h1>welcome to 4 layers architecture or react</h1>
+        element:<Feed/>
     }
 ])

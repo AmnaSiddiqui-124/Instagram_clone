@@ -67,7 +67,9 @@ async function loginController(req,res){
            }
         ]
 
-    })
+    }).select("+password")
+
+
     if(!isUserExists){
         return res.status(409).json({
             message:"User not found"
