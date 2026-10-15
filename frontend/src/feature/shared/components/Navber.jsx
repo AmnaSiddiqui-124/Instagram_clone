@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 
 const Navber = () => {
 
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
   return (
    <nav className='nav-bar'>
